@@ -267,7 +267,7 @@ def merge(config, Y):
   Y = Y.reshape(h, w, 1) * 255
   Y = Y.round().astype(np.uint8)
 
-  data = prepare_data(config.sess, dataset="Test")
+  data = prepare_data(config.sess, dataset="gow_hr_images")
   src = Image.open(data[2]).convert('YCbCr')
   (width, height) = src.size
   if downsample is False:
