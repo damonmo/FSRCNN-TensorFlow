@@ -86,15 +86,11 @@ def prepare_data(sess, dataset):
     
     For train dataset, output data would be ['.../t1.bmp', '.../t2.bmp', ..., '.../t99.bmp']
   """
-  if FLAGS.train:
-    data_dir = os.path.join(os.getcwd(), dataset)
-    data = []
-    for files in ('*.bmp', '*.png'):
-        data.extend(glob.glob(os.path.join(data_dir, files)))
-    shuffle(data)
-  else:
-    data_dir = os.path.join(os.sep, (os.path.join(os.getcwd(), dataset)), "Set5")
-    data = sorted(glob.glob(os.path.join(data_dir, "*.bmp")))
+  data_dir = os.path.join(os.getcwd(), dataset)
+  data = []
+  for files in ('*.bmp', '*.png'):
+      data.extend(glob.glob(os.path.join(data_dir, files)))
+  #shuffle(data)
 
   return data
 
@@ -243,7 +239,7 @@ def test_input_setup(config):
   sess = config.sess
 
   # Load data path
-  data = prepare_data(sess, dataset="Test")
+  data = prepare_data(sess, dataset="gow_hr_images")
 
   input_, label_ = preprocess(data[2], config.scale)
 
