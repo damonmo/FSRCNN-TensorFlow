@@ -283,7 +283,7 @@ def merge(config, Y):
   sess = config.sess
   data = prepare_data(sess, dataset=config.data_dir)
   print(data[20])
-  src = Image.open(data[2]).convert('YCbCr')
+  src = Image.open(data[20]).convert('YCbCr')
   (width, height) = src.size
   if downsample is False and precomputed_labels is False:
     src = src.resize((width * config.scale, height * config.scale), Image.BICUBIC)
