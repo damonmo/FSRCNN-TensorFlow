@@ -111,7 +111,7 @@ class Model(object):
       for idx in range(0, batch_idxs):
         batch_images = train_data[idx * self.batch_size : (idx + 1) * self.batch_size]
         batch_labels = train_label[idx * self.batch_size : (idx + 1) * self.batch_size]
-
+        print("Batch: {}/{}".format(idx+1, batch_idx))
         for exp in range(3):
             if exp==0:
                 images = batch_images
@@ -128,7 +128,7 @@ class Model(object):
             _, err = self.sess.run([self.train_op, self.loss], feed_dict={self.images: images, self.labels: labels, self.batch: self.batch_size})
             batch_average += err
 
-            if counter % 10 == 0:
+            if counter % 100 == 0:
               print("Epoch: [%2d], step: [%2d], time: [%4.4f], loss: [%.8f]" \
                 % ((ep+1), counter, time.time() - start_time, err))
 
