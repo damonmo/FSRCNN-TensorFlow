@@ -252,7 +252,7 @@ def test_input_setup(config):
   sess = config.sess
 
   # Load data path
-  data = prepare_data(sess, dataset="gow_hr_images")
+  data = prepare_data(sess, dataset=config.data_dir)
 
   input_, label_ = preprocess(data[2], config.scale)
 
