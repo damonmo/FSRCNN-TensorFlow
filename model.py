@@ -28,6 +28,7 @@ class Model(object):
     self.train = config.train
     self.epoch = config.epoch
     self.scale = config.scale
+    self.augment_data = config.augment_data
     self.radius = config.radius
     self.batch_size = config.batch_size
     self.learning_rate = config.learning_rate
@@ -117,14 +118,16 @@ class Model(object):
             if exp==0:
                 images = batch_images
                 labels = batch_labels
-            elif exp==1:
+            elif exp==1 and self.augment_data:
                 k = randrange(3)+1
                 images = np.rot90(batch_images, k, (1,2))
                 labels = np.rot90(batch_labels, k, (1,2))
-            elif exp==2:
+            elif exp==2 and self.augment_data:
                 k = randrange(2)
                 images = batch_images[:,::-1] if k==0 else batch_images[:,:,::-1]
                 labels = batch_labels[:,::-1] if k==0 else batch_labels[:,:,::-1]
+            else:
+                continue
             counter += 1
             _, err = self.sess.run([self.train_op, self.loss], feed_dict={self.images: images, self.labels: labels, self.batch: self.batch_size})
             batch_average += err
