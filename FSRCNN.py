@@ -77,7 +77,7 @@ class Model(object):
       deconv = tf.depth_to_space(deconv, self.scale, name='pixel_shuffle', data_format='NHWC')
       return deconv
     else:
-      scale1_weights = tf.get_variable('scale1_w', shape=[9, 9, d, 1], initializer=tf.variance_scaling_initializer(2))
+      scale1_weights = tf.get_variable('scale1_w', shape=[5, 5, d, 1], initializer=tf.variance_scaling_initializer(2))
       scale1_biases = tf.get_variable('scale1_b', initializer=tf.zeros([1]))
       conv = tf.nn.conv2d(conv, scale1_weights, strides=[1,1,1,1], padding='SAME', data_format='NHWC')
       conv = tf.nn.bias_add(conv, scale1_biases, data_format='NHWC')
