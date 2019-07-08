@@ -254,7 +254,7 @@ def test_input_setup(config):
   # Load data path
   data = prepare_data(sess, dataset=config.data_dir)
 
-  input_, label_ = preprocess(data[2], config.scale)
+  input_, label_ = preprocess(data[10], config.scale)
 
   if len(input_.shape) == 3:
     h, w, _ = input_.shape
