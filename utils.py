@@ -254,7 +254,7 @@ def test_input_setup(config):
   # Load data path
   data = prepare_data(sess, dataset=config.data_dir)
 
-  input_, label_ = preprocess(data[10], config.scale)
+  input_, label_ = preprocess(data[20], config.scale)
 
   if len(input_.shape) == 3:
     h, w, _ = input_.shape
@@ -281,7 +281,7 @@ def merge(config, Y):
   Y = Y.round().astype(np.uint8)
 
   data = prepare_data(config.sess, dataset=config.data_dir)
-  print(data[10])
+  print(data[20])
   src = Image.open(data[2]).convert('YCbCr')
   (width, height) = src.size
   if downsample is False and precomputed_labels is False:
