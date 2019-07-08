@@ -111,7 +111,8 @@ class Model(object):
       for idx in range(0, batch_idxs):
         batch_images = train_data[idx * self.batch_size : (idx + 1) * self.batch_size]
         batch_labels = train_label[idx * self.batch_size : (idx + 1) * self.batch_size]
-        print("Batch: {}/{}".format(idx+1, batch_idxs))
+        if idx+1 % 100 == 0:
+            print("Batch: {}/{}".format(idx+1, batch_idxs))
         for exp in range(3):
             if exp==0:
                 images = batch_images
