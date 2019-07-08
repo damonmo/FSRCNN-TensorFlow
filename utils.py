@@ -252,7 +252,8 @@ def test_input_setup(config):
   sess = config.sess
 
   # Load data path
-  data = prepare_data(sess, dataset=config.data_dir)
+  #data = prepare_data(sess, dataset=config.data_dir)
+  data = prepare_data(config.sess, dataset=os.path.join(config.data_dir, "2048k"))
 
   input_, label_ = preprocess(data[20], config.scale)
 
@@ -280,7 +281,8 @@ def merge(config, Y):
   Y = Y.reshape(h, w, 1) * 255
   Y = Y.round().astype(np.uint8)
 
-  data = prepare_data(config.sess, dataset=config.data_dir)
+  #data = prepare_data(sess, dataset=config.data_dir)
+  data = prepare_data(config.sess, dataset=os.path.join(config.data_dir, "2048k"))
   print(data[20])
   src = Image.open(data[2]).convert('YCbCr')
   (width, height) = src.size
