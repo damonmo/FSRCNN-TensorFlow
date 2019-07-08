@@ -280,6 +280,7 @@ def merge(config, Y):
   Y = Y.reshape(h, w, 1) * 255
   Y = Y.round().astype(np.uint8)
 
+  sess = config.sess
   data = prepare_data(sess, dataset=config.data_dir)
   print(data[20])
   src = Image.open(data[2]).convert('YCbCr')
