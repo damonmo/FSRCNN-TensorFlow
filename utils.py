@@ -281,7 +281,7 @@ def merge(config, Y):
   Y = Y.round().astype(np.uint8)
 
   data = prepare_data(config.sess, dataset=config.data_dir)
-  print(data[2])
+  print(data[10])
   src = Image.open(data[2]).convert('YCbCr')
   (width, height) = src.size
   if downsample is False and precomputed_labels is False:
