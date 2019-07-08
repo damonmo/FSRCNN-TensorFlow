@@ -66,15 +66,22 @@ class Model(object):
       conv = tf.nn.bias_add(conv, expand_biases, data_format='NHWC')
       conv = self.prelu(conv, m + 4)
 
-    # Sub-pixel convolution
-    size = self.radius * 2 + 1
-    deconv_weights = tf.get_variable('deconv_w', shape=[size, size, d, self.scale**2], initializer=tf.variance_scaling_initializer(0.01))
-    deconv_biases = tf.get_variable('deconv_b', initializer=tf.zeros([self.scale**2]))
-    deconv = tf.nn.conv2d(conv, deconv_weights, strides=[1,1,1,1], padding='SAME', data_format='NHWC')
-    deconv = tf.nn.bias_add(deconv, deconv_biases, data_format='NHWC')
-    deconv = tf.depth_to_space(deconv, self.scale, name='pixel_shuffle', data_format='NHWC')
-
-    return deconv
+    if self.scale != 1:
+      # Sub-pixel convolution
+      size = self.radius * 2 + 1
+      deconv_weights = tf.get_variable('deconv_w', shape=[size, size, d, self.scale**2], initializer=tf.variance_scaling_initializer(0.01))
+      deconv_biases = tf.get_variable('deconv_b', initializer=tf.zeros([self.scale**2]))
+      deconv = tf.nn.conv2d(conv, deconv_weights, strides=[1,1,1,1], padding='SAME', data_format='NHWC')
+      deconv = tf.nn.bias_add(deconv, deconv_biases, data_format='NHWC')
+      deconv = tf.depth_to_space(deconv, self.scale, name='pixel_shuffle', data_format='NHWC')
+      return deconv
+    else:
+      scale1_weights = tf.get_variable('scale1_w', shape=[5, 5, d, 1], initializer=tf.variance_scaling_initializer(2))
+      scale1_biases = tf.get_variable('scale1_b', initializer=tf.zeros([1]))
+      conv = tf.nn.conv2d(conv, scale1_weights, strides=[1,1,1,1], padding='SAME', data_format='NHWC')
+      conv = tf.nn.bias_add(conv, scale1_biases, data_format='NHWC')
+      #conv = self.prelu(conv, m + 4)
+      return conv
 
   def prelu(self, _x, i):
     """

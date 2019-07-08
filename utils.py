@@ -17,6 +17,7 @@ from multiprocessing import Pool, Lock, active_children
 FLAGS = tf.app.flags.FLAGS
 
 downsample = True
+precomputed_labels = False
 
 def preprocess(path, scale=3, distort=False):
   """
@@ -25,6 +26,11 @@ def preprocess(path, scale=3, distort=False):
     (2) Downsample by scale factor
     (3) Normalize
   """
+  global downsample, precomputed_labels
+  if scale == 1:
+    downsample = False
+    precomputed_labels = True
+
   try:
     from wand.image import Image
   except:
@@ -53,6 +59,13 @@ def preprocess(path, scale=3, distort=False):
             #scaled_image = Image.open('lowres.png').convert('L')
 
         input_ = np.frombuffer(scaled_image.tobytes(), dtype=np.uint8).reshape((new_height, new_width))
+    elif precomputed_labels:
+        input_ = np.frombuffer(image.tobytes(), dtype=np.uint8).reshape(height, width)
+        input_dir, input_filename = os.path.split(path)
+        label_path = os.path.join(input_dir, "labels", input_filename)
+        label_image = Image.open(label_path).convert('L')
+        (label_width, label_height) = label_image.size
+        label_ = np.frombuffer(label_image.tobytes(), dtype=np.uint8).reshape(label_height, label_width)
     else:
         input_ = np.frombuffer(image.tobytes(), dtype=np.uint8).reshape(height, width)
         scaled_image = image.resize((width * scale, height * scale), Image.BICUBIC)
@@ -271,7 +284,7 @@ def merge(config, Y):
   print(data[2])
   src = Image.open(data[2]).convert('YCbCr')
   (width, height) = src.size
-  if downsample is False:
+  if downsample is False and precomputed_labels is False:
     src = src.resize((width * config.scale, height * config.scale), Image.BICUBIC)
     (width, height) = src.size
   CbCr = np.frombuffer(src.tobytes(), dtype=np.uint8).reshape(height, width, 3)[:,:,1:]

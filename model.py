@@ -36,9 +36,9 @@ class Model(object):
     self.params = config.params
 
     self.padding = 4
-    # Different image/label sub-sizes for different scaling factors x2, x3, x4
-    scale_factors = [[20 + self.padding, 40], [14 + self.padding, 42], [12 + self.padding, 48]]
-    self.image_size, self.label_size = scale_factors[self.scale - 2]
+    # Different image/label sub-sizes for different scaling factors x1, x2, x3, x4
+    scale_factors = [[20 + self.padding, 20], [20 + self.padding, 40], [14 + self.padding, 42], [12 + self.padding, 48]]
+    self.image_size, self.label_size = scale_factors[self.scale - 1]
 
     self.stride = self.image_size - self.padding
 
