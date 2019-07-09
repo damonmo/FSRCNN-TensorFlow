@@ -28,7 +28,7 @@ class Model(object):
         else:
             conv = tf.nn.conv2d(conv, weights, strides=[1,1,1,1], padding='VALID', data_format='NHWC')
         conv = tf.nn.bias_add(conv, biases, data_format='NHWC')
-        conv = self.prelu(conv, 1)
+        conv = self.prelu(conv, out_channels)
 
     # Sub-pixel convolution
     size = self.radius * 2 + 1
